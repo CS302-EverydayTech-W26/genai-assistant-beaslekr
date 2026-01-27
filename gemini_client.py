@@ -17,10 +17,9 @@ class GeminiClient:
     def generate_response(self, user_input):
         if self.chat_history == None:  
             return "AI Assistant is not configured correctly"
-        
         else:
             # TO DO: Modify system instruction based on the purpose of your GenAI Assistant
-            system_instruction = "YOUR SYSTEM INSTRUCTION HERE"
+            system_instruction = "Respond to this message: "
             
             # Add the prompt to the chat history
             self.chat_history += [types.Content(
@@ -29,7 +28,15 @@ class GeminiClient:
                 )]
 
             # TO DO: Use the client's chat history & system instruction to prompt Gemini
+            chat = self.client.chats.create(model="gemini-2.5-flash-lite")
+
+            response = chat.send_message(user_input)
 
             # TO DO: Add the response text from Gemini to the client's chat history
+            self.chat_history += [types.Content(
+                  role='model',
+                  parts=[types.Part.from_text(text=response.text)]
+                )]
 
             # TO DO: Return the response text from Gemini
+            return response.text
