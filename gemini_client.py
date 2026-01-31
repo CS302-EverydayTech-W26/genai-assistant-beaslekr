@@ -28,9 +28,8 @@ class GeminiClient:
                 )]
 
             # TO DO: Use the client's chat history & system instruction to prompt Gemini
-            chat = self.client.chats.create(model="gemini-2.5-flash-lite")
-
-            response = chat.send_message(user_input)
+            chat = self.client.chats.create(model="gemini-2.5-flash-lite",history=self.chat_history)
+            response = chat.send_message(system_instruction + user_input)
 
             # TO DO: Add the response text from Gemini to the client's chat history
             self.chat_history += [types.Content(
